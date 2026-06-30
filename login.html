@@ -2,102 +2,52 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Atletas</title>
+    <title>Login - Team Amazonas</title>
     <style>
-        :root {
-            --primary-color: #0b1a30;    /* Azul Marinho */
-            --accent-color: #d63031;     /* Vermelho */
-            --card-bg: #ffffff;
-            --border-color: #dcdde1;
+        body { 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background: #0b1a30; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
         }
-
-        body {
-            background-color: var(--primary-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .login-card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
+            width: 320px; 
+            text-align: center; 
         }
-
-        .login-card {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            width: 90%;
-            max-width: 450px;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            border-bottom: 4px solid var(--primary-color);
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-
-        .header-logo { width: 60px; height: 60px; object-fit: contain; }
-        .header-text { text-align: center; flex: 1; }
-        .header-text h1 { font-size: 18px; margin: 0; color: var(--primary-color); text-transform: uppercase; }
-        .header-text p { font-size: 12px; margin: 5px 0 0; color: var(--accent-color); font-weight: bold; }
-
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 500; }
-        input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; box-sizing: border-box; }
-        
-        .btn-submit { 
-            width: 100%; padding: 12px; background-color: var(--primary-color); 
-            color: white; border: none; border-radius: 6px; cursor: pointer; 
-            font-weight: bold; text-transform: uppercase; margin-top: 10px;
-        }
-        .btn-submit:hover { background-color: #122846; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #d63031; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #b02a2a; }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <div class="header">
-            <img src="team.png" alt="Logo" class="header-logo">
-            <div class="header-text">
-                <h1>Sistema de Atletas</h1>
-                <p>Acesso ao Painel</p>
-            </div>
-            <img src="liga1.png" alt="Logo" class="header-logo">
-        </div>
+<div class="login-card">
+    <h2>Login de Acesso</h2>
+    <input type="text" id="usuario" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
+    <button onclick="logar()">Entrar no Sistema</button>
+</div>
 
-        <form id="form-login">
-            <div class="form-group">
-                <label for="usuario">Usuário</label>
-                <input type="text" id="usuario" name="usuario" required>
-            </div>
-            <div class="form-group">
-                <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" required>
-            </div>
-            <button type="submit" class="btn-submit">Entrar no Sistema</button>
-        </form>
-    </div>
+<script>
+    function logar() {
+        const u = document.getElementById('usuario').value;
+        const s = document.getElementById('senha').value;
 
-    <script>
-        document.getElementById('form-login').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Altere abaixo o usuário e senha desejados
+        if(u === "admin" && s === "123") {
+            window.location.href = "index.html"; // Redireciona para o seu arquivo
+        } else {
+            alert("Acesso Negado!");
+        }
+    }
+</script>
 
-            const usuario = document.getElementById('usuario').value;
-            const senha = document.getElementById('senha').value;
-
-            // Lógica de autenticação
-            if (usuario === "admin" && senha === "123") {
-                alert("Login autorizado!");
-                // Adicione aqui a lógica de redirecionamento ou exibição da próxima tela
-            } else {
-                alert("Usuário ou senha incorretos.");
-            }
-        });
-    </script>
 </body>
 </html>
