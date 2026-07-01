@@ -35,16 +35,26 @@
     <button onclick="logar()">Entrar no Sistema</button>
 </div>
 
-<script>
-    function logar() {
-        const u = document.getElementById('usuario').value;
-        const s = document.getElementById('senha').value;
+<script type="module">
+    // Importações do SDK do Firebase
+    import { auth } from './firebase-config.js';
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-        // Altere abaixo o usuário e senha desejados
-        if(u === "admin" && s === "123") {
-            window.location.href = "sistema.html"; // Redireciona para o seu arquivo
-        } else {
-            alert("Acesso Negado!");
+    // Tornamos a função assíncrona para lidar com a resposta do Firebase
+    window.logar = async function() {
+        const email = document.getElementById('usuario').value;
+        const senha = document.getElementById('senha').value;
+
+        try {
+            // Tenta logar usando os dados do input
+            await signInWithEmailAndPassword(auth, email, senha);
+            
+            // Se o login for bem-sucedido, o Firebase gerencia o token
+            window.location.href = "sistema.html"; 
+        } catch (error) {
+            // Se houver erro (senha errada, usuário inexistente)
+            alert("Acesso Negado: Verifique suas credenciais.");
+            console.error("Erro no login:", error.message);
         }
     }
 </script>
