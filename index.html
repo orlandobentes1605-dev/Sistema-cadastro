@@ -5,23 +5,23 @@
     <title>Login - Team Amazonas</title>
     <style>
         body { margin: 0; font-family: Arial, sans-serif; background: #0b1a30; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #d63031; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        button:hover { background: #b02a2a; }
-        /* Estilo para o botão do GitHub */
+        .login-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
+        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; margin-top: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; }
+        .btn-entrar { background: #27ae60; }
+        .btn-cadastrar { background: #2980b9; }
         .btn-github { background: #24292e; }
-        .btn-github:hover { background: #000; }
     </style>
 </head>
 <body>
 
 <div class="login-card">
-    <h2>Login de Acesso</h2>
-    <input type="text" id="usuario" placeholder="Usuário">
+    <h2>Acesso ao Sistema</h2>
+    <input type="email" id="email" placeholder="E-mail">
     <input type="password" id="senha" placeholder="Senha">
-    <button onclick="logar()">Entrar no Sistema</button>
     
+    <button class="btn-entrar" onclick="logar()">Entrar no Sistema</button>
+    <button class="btn-cadastrar" onclick="cadastrar()">Criar Conta</button>
     <button id="btn-github" class="btn-github">Entrar com GitHub</button>
 </div>
 
@@ -29,33 +29,44 @@
     import { auth } from './firebase-config.js';
     import { 
         signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword,
         signInWithPopup, 
         GithubAuthProvider 
     } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const provider = new GithubAuthProvider();
 
-    // Lógica original de email/senha
+    // Lógica de Login
     window.logar = async function() {
-        const email = document.getElementById('usuario').value;
+        const email = document.getElementById('email').value;
         const senha = document.getElementById('senha').value;
         try {
             await signInWithEmailAndPassword(auth, email, senha);
-            window.location.href = "sistema.html"; 
+            window.location.href = "sistema.html";
         } catch (error) {
-            alert("Acesso Negado: Verifique suas credenciais.");
+            alert("Erro no Login: " + error.message);
         }
     }
 
-    // Nova lógica do GitHub
+    // Lógica de Cadastro
+    window.cadastrar = async function() {
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+        try {
+            await createUserWithEmailAndPassword(auth, email, senha);
+            alert("Conta criada! Agora clique em 'Entrar' para acessar.");
+        } catch (error) {
+            alert("Erro no Cadastro: " + error.message);
+        }
+    }
+
+    // Lógica GitHub
     document.getElementById('btn-github').addEventListener('click', async () => {
         try {
             await signInWithPopup(auth, provider);
-            // Se logar com sucesso, redireciona
             window.location.href = "sistema.html";
         } catch (error) {
-            console.error("Erro no login GitHub:", error.message);
-            alert("Erro ao logar com GitHub: " + error.message);
+            alert("Erro no GitHub: " + error.message);
         }
     });
 </script>
