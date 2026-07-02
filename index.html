@@ -41,7 +41,7 @@
         const senha = document.getElementById('senha').value;
         try {
             await signInWithEmailAndPassword(auth, email, senha);
-            window.location.href = "index.html"; 
+            window.location.href = "sistema.html"; 
         } catch (error) {
             alert("Acesso Negado: Verifique suas credenciais.");
         }
