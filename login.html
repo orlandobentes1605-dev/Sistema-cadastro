@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <title>Login - Team Amazonas</title>
     <style>
-        body { 
-            margin: 0; 
-            font-family: Arial, sans-serif; 
-            background: #0b1a30; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-        }
-        .login-card { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
-            width: 320px; 
-            text-align: center; 
-        }
+        body { margin: 0; font-family: Arial, sans-serif; background: #0b1a30; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #d63031; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button { width: 100%; padding: 12px; background: #d63031; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         button:hover { background: #b02a2a; }
+        /* Estilo para o botão do GitHub */
+        .btn-github { background: #24292e; }
+        .btn-github:hover { background: #000; }
     </style>
 </head>
 <body>
@@ -33,30 +21,43 @@
     <input type="text" id="usuario" placeholder="Usuário">
     <input type="password" id="senha" placeholder="Senha">
     <button onclick="logar()">Entrar no Sistema</button>
+    
+    <button id="btn-github" class="btn-github">Entrar com GitHub</button>
 </div>
 
 <script type="module">
-    // Importações do SDK do Firebase
     import { auth } from './firebase-config.js';
-    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { 
+        signInWithEmailAndPassword, 
+        signInWithPopup, 
+        GithubAuthProvider 
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    // Tornamos a função assíncrona para lidar com a resposta do Firebase
+    const provider = new GithubAuthProvider();
+
+    // Lógica original de email/senha
     window.logar = async function() {
         const email = document.getElementById('usuario').value;
         const senha = document.getElementById('senha').value;
-
         try {
-            // Tenta logar usando os dados do input
             await signInWithEmailAndPassword(auth, email, senha);
-            
-            // Se o login for bem-sucedido, o Firebase gerencia o token
             window.location.href = "sistema.html"; 
         } catch (error) {
-            // Se houver erro (senha errada, usuário inexistente)
             alert("Acesso Negado: Verifique suas credenciais.");
-            console.error("Erro no login:", error.message);
         }
     }
+
+    // Nova lógica do GitHub
+    document.getElementById('btn-github').addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, provider);
+            // Se logar com sucesso, redireciona
+            window.location.href = "sistema.html";
+        } catch (error) {
+            console.error("Erro no login GitHub:", error.message);
+            alert("Erro ao logar com GitHub: " + error.message);
+        }
+    });
 </script>
 
 </body>
