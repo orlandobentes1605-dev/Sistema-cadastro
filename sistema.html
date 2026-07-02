@@ -941,28 +941,19 @@
         }
     }
 </script>
+    <script type="module">
     import { auth } from './firebase-config.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        // Se não houver usuário logado, volta para o index.html (Login)
-        window.location.href = "index.html";
-    }
-});
-  const firebaseConfig = {
-    apiKey: "AIzaSyAC3xFRezQ-st2JCmUyCG7xMZAUZ5gIjyA",
-    authDomain: "sistemafiliacao-team-as.firebaseapp.com",
-    projectId: "sistemafiliacao-team-as",
-    storageBucket: "sistemafiliacao-team-as.firebasestorage.app",
-    messagingSenderId: "727325899527",
-    appId: "1:727325899527:web:3b4105e30e1f901775e3a2",
-    measurementId: "G-RWTHQZPR3W"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+    // Proteção de rota
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            // Usuário não está logado, envia de volta para o login
+            window.location.href = "index.html";
+        } else {
+            console.log("Usuário autenticado:", user.email);
+        }
+    });
 </script>
 
 </body>
