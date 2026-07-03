@@ -940,20 +940,18 @@
             fecharModal(idModal);
         }
     }
+    <h1>Bem-vindo ao Sistema</h1>
+    <button onclick="sair()">Sair</button>
 </script>
-    <script type="module">
+   <script type="module">
     import { auth } from './firebase-config.js';
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    // Proteção de rota
     onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            // Usuário não está logado, envia de volta para o login
-            window.location.href = "index.html";
-        } else {
-            console.log("Usuário autenticado:", user.email);
-        }
+        if (!user) window.location.href = "index.html";
     });
+
+    window.sair = () => signOut(auth).then(() => window.location.href = "index.html");
 </script>
 
 </body>
