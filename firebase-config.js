@@ -1,9 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-analytics.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAC3xFRezQ-st2JCmUyCG7xMZAUZ5gIjyA",
+    apiKey: "SUA_API_KEY",
     authDomain: "sistemafiliacao-team-as.firebaseapp.com",
     projectId: "sistemafiliacao-team-as",
     storageBucket: "sistemafiliacao-team-as.firebasestorage.app",
@@ -14,4 +14,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const analytics = getAnalytics(app);
+export const db = getFirestore(app);
