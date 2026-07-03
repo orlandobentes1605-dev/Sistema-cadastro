@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <title>Login - Team Amazonas</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: #0b1a30; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; margin-top: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; }
+        /* Estilos globais para manter o padrão */
+        body { 
+            margin: 0; font-family: Arial, sans-serif; background: #0b1a30; 
+            display: flex; justify-content: center; align-items: center; height: 100vh; 
+        }
+        .login-card { 
+            background: white; padding: 40px; border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; 
+        }
+        input { 
+            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; 
+            border-radius: 6px; box-sizing: border-box; 
+        }
+        button { 
+            width: 100%; padding: 12px; border: none; border-radius: 6px; 
+            cursor: pointer; font-weight: bold; margin-top: 10px; color: white; 
+        }
         .btn-entrar { background: #27ae60; }
         .btn-cadastrar { background: #2980b9; }
         .btn-github { background: #24292e; }
@@ -15,17 +28,23 @@
 </head>
 <body>
 
-<h2>Acesso ao Sistema</h2>
-    <input type="text" id="nome" placeholder="Nome Completo">
+<div class="login-card">
+    <h2>Acesso Team Amazonas</h2>
+    <input type="text" id="nome" placeholder="Nome (apenas cadastro)">
     <input type="email" id="email" placeholder="E-mail">
     <input type="password" id="senha" placeholder="Senha">
-    <button onclick="logar()">Entrar</button>
-    <button onclick="cadastrar()">Criar Conta</button>
+    
+    <button class="btn-entrar" onclick="logar()">Entrar no Sistema</button>
+    <button class="btn-cadastrar" onclick="cadastrar()">Criar Conta</button>
+    <button id="btn-github" class="btn-github">Entrar com GitHub</button>
+</div>
 
 <script type="module">
     import { auth, db } from './firebase-config.js';
-    import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const provider = new GithubAuthProvider();
 
     window.logar = async () => {
         const email = document.getElementById('email').value;
@@ -43,9 +62,16 @@
         try {
             const cred = await createUserWithEmailAndPassword(auth, email, senha);
             await setDoc(doc(db, "usuarios", cred.user.uid), { nome: nome, nivel: "afiliado" });
-            alert("Cadastro realizado!");
-        } catch (e) { alert("Erro no cadastro: " + e.message); }
+            alert("Cadastro realizado com sucesso!");
+        } catch (e) { alert("Erro: " + e.message); }
     }
+
+    document.getElementById('btn-github').addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, provider);
+            window.location.href = "sistema.html";
+        } catch (e) { alert("Erro GitHub: " + e.message); }
+    });
 </script>
 
 </body>
