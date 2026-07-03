@@ -677,7 +677,13 @@
         </div>
     </div>
 </div>
-
+<div class="card">
+    <h1>Cadastrar Atleta</h1>
+    <input type="text" id="nomeAtleta" placeholder="Nome do Atleta">
+    <input type="text" id="categoria" placeholder="Categoria">
+    <button onclick="salvarAtleta()">Salvar Atleta</button>
+    <button onclick="sair()" style="background: #95a5a6;">Sair</button>
+</div>
 <script>
     let listaAtletas = JSON.parse(localStorage.getItem('listaAtletas')) || [];
     let contadorInscricao = parseInt(localStorage.getItem('contadorInscricao')) || 1; 
