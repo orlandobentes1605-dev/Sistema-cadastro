@@ -946,19 +946,51 @@
             fecharModal(idModal);
         }
     }
-    <h1>Bem-vindo ao Sistema</h1>
-    <button onclick="sair()">Sair</button>
-</script>
-   <script type="module">
-    import { auth } from './firebase-config.js';
+    
+<script type="module">
+    import { auth, db } from './firebase-config.js';
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+    // 1. Proteção de Rota
     onAuthStateChanged(auth, (user) => {
         if (!user) window.location.href = "index.html";
     });
 
+    // 2. Salvar Atleta
+    window.salvarAtleta = async () => {
+        const nome = document.getElementById('nomeAtleta').value;
+        const categoria = document.getElementById('categoria').value;
+
+        if (!nome || !categoria) return alert("Preencha todos os campos!");
+
+        try {
+            await addDoc(collection(db, "atletas"), {
+                nome: nome,
+                categoria: categoria,
+                data: new Date()
+            });
+            document.getElementById('nomeAtleta').value = "";
+            document.getElementById('categoria').value = "";
+        } catch (e) { alert("Erro: " + e.message); }
+    }
+
+    // 3. Listar em Tempo Real
+    const lista = document.getElementById("lista-atletas");
+    const q = query(collection(db, "atletas"), orderBy("data", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+        lista.innerHTML = "";
+        snapshot.forEach((doc) => {
+            const data = doc.data();
+            const li = document.createElement("li");
+            li.textContent = `${data.nome} - (${data.categoria})`;
+            lista.appendChild(li);
+        });
+    });
+
+    // 4. Sair
     window.sair = () => signOut(auth).then(() => window.location.href = "index.html");
 </script>
-
 </body>
 </html>
