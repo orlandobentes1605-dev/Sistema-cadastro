@@ -2,17 +2,18 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Team Amazonas</title>
     <style>
-        /* Estilos globais para manter o padrão */
         body { 
-            margin: 0; font-family: Arial, sans-serif; background: #0b1a30; 
+            margin: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #0b1a30; 
             display: flex; justify-content: center; align-items: center; height: 100vh; 
         }
         .login-card { 
             background: white; padding: 40px; border-radius: 12px; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 320px; text-align: center; 
         }
+        h2 { color: #0b1a30; margin-bottom: 20px; }
         input { 
             width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; 
             border-radius: 6px; box-sizing: border-box; 
@@ -20,17 +21,20 @@
         button { 
             width: 100%; padding: 12px; border: none; border-radius: 6px; 
             cursor: pointer; font-weight: bold; margin-top: 10px; color: white; 
+            transition: background 0.3s;
         }
         .btn-entrar { background: #27ae60; }
+        .btn-entrar:hover { background: #219150; }
         .btn-cadastrar { background: #2980b9; }
-        .btn-github { background: #24292e; }
+        .btn-cadastrar:hover { background: #2471a3; }
+        .btn-github { background: #24292e; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="login-card">
     <h2>Acesso Team Amazonas</h2>
-    <input type="text" id="nome" placeholder="Nome (apenas cadastro)">
+    <input type="text" id="nome" placeholder="Nome (apenas para cadastro)">
     <input type="email" id="email" placeholder="E-mail">
     <input type="password" id="senha" placeholder="Senha">
     
@@ -40,37 +44,57 @@
 </div>
 
 <script type="module">
+    // Importa a sua configuração e as funções do Firebase
     import { auth, db } from './firebase-config.js';
     import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const provider = new GithubAuthProvider();
 
+    // Função de Login
     window.logar = async () => {
         const email = document.getElementById('email').value;
         const senha = document.getElementById('senha').value;
         try {
             await signInWithEmailAndPassword(auth, email, senha);
-            window.location.href = "sistema.html";
-        } catch (e) { alert("Erro no login: " + e.message); }
+            window.location.href = "sistema.html"; // Redireciona após login
+        } catch (e) { 
+            alert("Erro no login: " + e.message); 
+        }
     }
 
+    // Função de Cadastro
     window.cadastrar = async () => {
         const nome = document.getElementById('nome').value;
         const email = document.getElementById('email').value;
         const senha = document.getElementById('senha').value;
+        
+        if (!nome) { alert("Por favor, preencha o nome para cadastro."); return; }
+
         try {
             const cred = await createUserWithEmailAndPassword(auth, email, senha);
-            await setDoc(doc(db, "usuarios", cred.user.uid), { nome: nome, nivel: "afiliado" });
+            // Salva o perfil do usuário no Firestore
+            await setDoc(doc(db, "usuarios", cred.user.uid), { 
+                nome: nome, 
+                email: email,
+                nivel: "afiliado",
+                dataCadastro: new Date()
+            });
             alert("Cadastro realizado com sucesso!");
-        } catch (e) { alert("Erro: " + e.message); }
+            window.location.href = "sistema.html";
+        } catch (e) { 
+            alert("Erro: " + e.message); 
+        }
     }
 
+    // Login via GitHub
     document.getElementById('btn-github').addEventListener('click', async () => {
         try {
             await signInWithPopup(auth, provider);
             window.location.href = "sistema.html";
-        } catch (e) { alert("Erro GitHub: " + e.message); }
+        } catch (e) { 
+            alert("Erro GitHub: " + e.message); 
+        }
     });
 </script>
 
