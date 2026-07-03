@@ -482,7 +482,6 @@
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <img src="team.png" alt="Logo Team Amazonas" class="header-logo">
@@ -677,13 +676,67 @@
         </div>
     </div>
 </div>
-<div class="card">
-    <h1>Cadastrar Atleta</h1>
-    <input type="text" id="nomeAtleta" placeholder="Nome do Atleta">
-    <input type="text" id="categoria" placeholder="Categoria">
-    <button onclick="salvarAtleta()">Salvar Atleta</button>
-    <button onclick="sair()" style="background: #95a5a6;">Sair</button>
-</div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot, collection, query, deleteDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAC3xFRezQ-st2JCmUyCG7xMZAUZ5gIjyA",
+        authDomain: "sistemafiliacao-team-as.firebaseapp.com",
+        projectId: "sistemafiliacao-team-as",
+        storageBucket: "sistemafiliacao-team-as.firebasestorage.app",
+        messagingSenderId: "727325899527",
+        appId: "1:727325899527:web:3b4105e30e1f901775e3a2",
+        measurementId: "G-RWTHQZPR3W"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // --- INTEGRAÇÃO COM FIREBASE ---
+    
+    // Função para salvar no Firestore
+    async function salvarNoFirebase(atleta) {
+        try {
+            await setDoc(doc(db, "atletas", atleta.id.toString()), atleta);
+        } catch (e) { console.error("Erro ao salvar no Firebase:", e); }
+    }
+
+    // Função para deletar no Firestore
+    async function deletarNoFirebase(id) {
+        try {
+            await deleteDoc(doc(db, "atletas", id.toString()));
+        } catch (e) { console.error("Erro ao excluir no Firebase:", e); }
+    }
+
+    // Escuta mudanças no Firestore (Sincronização em tempo real)
+    onSnapshot(collection(db, "atletas"), (snapshot) => {
+        const novaLista = [];
+        snapshot.forEach((doc) => novaLista.push(doc.data()));
+        window.listaAtletas = novaLista;
+        window.atualizarTabela();
+    });
+
+    // --- MODIFICAÇÃO NO SEU SUBMIT ---
+    document.getElementById('formAtleta').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        // ... (seu código de coleta de dados permanece igual) ...
+        // Após o push no array local, chame:
+        const novoAtleta = listaAtletas[listaAtletas.length - 1]; 
+        await salvarNoFirebase(novoAtleta);
+    });
+
+    // --- MODIFICAÇÃO NO DELETAR ---
+    window.deletarAtleta = async function(id) {
+        if (confirm("Tem certeza que deseja excluir permanentemente este filiado?")) {
+            await deletarNoFirebase(id);
+            listaAtletas = listaAtletas.filter(a => a.id !== id);
+            salvarDados();
+            atualizarTabela();
+        }
+    }
+</script>
 <script>
     let listaAtletas = JSON.parse(localStorage.getItem('listaAtletas')) || [];
     let contadorInscricao = parseInt(localStorage.getItem('contadorInscricao')) || 1; 
@@ -946,51 +999,6 @@
             fecharModal(idModal);
         }
     }
-    
-<script type="module">
-    import { auth, db } from './firebase-config.js';
-    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-    // 1. Proteção de Rota
-    onAuthStateChanged(auth, (user) => {
-        if (!user) window.location.href = "index.html";
-    });
-
-    // 2. Salvar Atleta
-    window.salvarAtleta = async () => {
-        const nome = document.getElementById('nomeAtleta').value;
-        const categoria = document.getElementById('categoria').value;
-
-        if (!nome || !categoria) return alert("Preencha todos os campos!");
-
-        try {
-            await addDoc(collection(db, "atletas"), {
-                nome: nome,
-                categoria: categoria,
-                data: new Date()
-            });
-            document.getElementById('nomeAtleta').value = "";
-            document.getElementById('categoria').value = "";
-        } catch (e) { alert("Erro: " + e.message); }
-    }
-
-    // 3. Listar em Tempo Real
-    const lista = document.getElementById("lista-atletas");
-    const q = query(collection(db, "atletas"), orderBy("data", "desc"));
-    
-    onSnapshot(q, (snapshot) => {
-        lista.innerHTML = "";
-        snapshot.forEach((doc) => {
-            const data = doc.data();
-            const li = document.createElement("li");
-            li.textContent = `${data.nome} - (${data.categoria})`;
-            lista.appendChild(li);
-        });
-    });
-
-    // 4. Sair
-    window.sair = () => signOut(auth).then(() => window.location.href = "index.html");
 </script>
 </body>
 </html>
