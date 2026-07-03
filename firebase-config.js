@@ -3,7 +3,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
+    apiKey: "AIzaSyAC3xFRezQ-st2JCmUyCG7xMZAUZ5gIjyA",
     authDomain: "sistemafiliacao-team-as.firebaseapp.com",
     projectId: "sistemafiliacao-team-as",
     storageBucket: "sistemafiliacao-team-as.firebasestorage.app",
