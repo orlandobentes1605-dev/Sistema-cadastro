@@ -1056,6 +1056,21 @@
             fecharModal(idModal);
         }
     }
+     function gerarQRCodeAtleta() {
+    // Captura os valores dos campos da sua carteirinha
+    const nome = document.getElementById('ccNome').innerText;
+    const registro = document.getElementById('ccInscricao').innerText;
+    const grad = document.getElementById('ccFaixa').innerText;
+    
+    // Formata o texto que vai dentro do QR Code
+    const textoDados = `ATLETA: ${nome}\nREGISTRO: ${registro}\nGRADUAÇÃO: ${grad}`;
+    
+    // Gera a URL do QR Code com o texto formatado
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoDados)}`;
+    
+    // Aplica a imagem
+    document.getElementById('qrCodeAtleta').src = qrUrl;
+}
 </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -1086,21 +1101,7 @@
         areaCaptura.innerHTML = '';
     });
 }
-    function gerarQRCodeAtleta() {
-    // Captura os valores dos campos da sua carteirinha
-    const nome = document.getElementById('ccNome').innerText;
-    const registro = document.getElementById('ccInscricao').innerText;
-    const grad = document.getElementById('ccFaixa').innerText;
-    
-    // Formata o texto que vai dentro do QR Code
-    const textoDados = `ATLETA: ${nome}\nREGISTRO: ${registro}\nGRADUAÇÃO: ${grad}`;
-    
-    // Gera a URL do QR Code com o texto formatado
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoDados)}`;
-    
-    // Aplica a imagem
-    document.getElementById('qrCodeAtleta').src = qrUrl;
-}
+   
 </script>
 </body>
 </html>
