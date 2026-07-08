@@ -704,8 +704,22 @@
                         <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
                     </div>
                     </div>
-      <div class="cc-qr-container" style="flex: 1; text-align: center; margin-left: 10px;">
-    <img id="qrCodeAtleta" src="" alt="QR Code" style="width: 80px; height: 80px; border: 1px solid #ccc;">
+    <div id="modalCarteirinha" class="modal-overlay" onclick="fecharModalAoClicarFora(event, 'modalCarteirinha')">
+    <div style="text-align: center;">
+        <button class="btn-baixar" onclick="salvarCarteirinha()">⬇ BAIXAR CARTEIRINHA (PNG)</button>
+        
+        <div class="carteirinha-container" id="carteirinhaPrint">
+            <div style="flex: 2; text-align: left; font-size: 14px;">
+                <div id="ccNome" style="font-weight:bold; font-size: 18px;">Nome</div>
+                <div id="ccInscricao">Registro: --</div>
+                <div id="ccNasc">Nasc: --/--/----</div>
+                <div id="ccFaixa" style="margin-top:10px; padding: 5px; font-weight: bold;">Graduação</div>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: flex-end; align-items: flex-end;">
+                <img id="ccQrCode" src="" alt="QR" style="width: 80px; height: 80px; border: 1px solid #ccc;">
+            </div>
+        </div>
+    </div>
 </div>
                 </div>
             </div>
@@ -1010,6 +1024,11 @@
             "Preta": "#000000",
             "Mestre": "#000000"
         };
+        
+        const textoQR = `Atleta: ${atleta.nome} | Reg: ${atleta.inscricao} | Nasc: ${atleta.nascimento}`;
+        document.getElementById('ccQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoQR)}`;
+
+        document.getElementById('modalCarteirinha').classList.add('active');
 
         let corBase = "#2c3e50"; 
         let corPonta = null;
@@ -1046,7 +1065,7 @@
 
         document.getElementById('modalCarteirinha').classList.add('active');
     }
-
+    
     function fecharModal(idModal) {
         document.getElementById(idModal).classList.remove('active');
     }
@@ -1056,21 +1075,14 @@
             fecharModal(idModal);
         }
     }
-     function gerarQRCodeAtleta() {
-    // Captura os valores dos campos da sua carteirinha
-    const nome = document.getElementById('ccNome').innerText;
-    const registro = document.getElementById('ccInscricao').innerText;
-    const grad = document.getElementById('ccFaixa').innerText;
-    
-    // Formata o texto que vai dentro do QR Code
-    const textoDados = `ATLETA: ${nome}\nREGISTRO: ${registro}\nGRADUAÇÃO: ${grad}`;
-    
-    // Gera a URL do QR Code com o texto formatado
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoDados)}`;
-    
-    // Aplica a imagem
-    document.getElementById('qrCodeAtleta').src = qrUrl;
-}
+    function salvarCarteirinha() {
+        html2canvas(document.getElementById('carteirinhaPrint'), { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'Carteirinha.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+        });
+        
 </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
