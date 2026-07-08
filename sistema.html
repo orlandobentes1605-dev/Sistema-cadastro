@@ -712,7 +712,9 @@
         <div id="capture-area" style="position: absolute; left: -9999px; top: 0; background: #fff; padding: 20px; width: 400px;">
     <div id="capture-content"></div>
 </div>
-      
+      <div class="cc-qr-container" style="flex: 1; text-align: center; margin-left: 10px;">
+    <img id="qrCodeAtleta" src="" alt="QR Code" style="width: 80px; height: 80px; border: 1px solid #ccc;">
+</div>
         <script>
     function trocarTab(evt, tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -1083,6 +1085,21 @@
         // Limpa a área oculta
         areaCaptura.innerHTML = '';
     });
+}
+    function gerarQRCodeAtleta() {
+    // Captura os valores dos campos da sua carteirinha
+    const nome = document.getElementById('ccNome').innerText;
+    const registro = document.getElementById('ccInscricao').innerText;
+    const grad = document.getElementById('ccFaixa').innerText;
+    
+    // Formata o texto que vai dentro do QR Code
+    const textoDados = `ATLETA: ${nome}\nREGISTRO: ${registro}\nGRADUAÇÃO: ${grad}`;
+    
+    // Gera a URL do QR Code com o texto formatado
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoDados)}`;
+    
+    // Aplica a imagem
+    document.getElementById('qrCodeAtleta').src = qrUrl;
 }
 </script>
 </body>
