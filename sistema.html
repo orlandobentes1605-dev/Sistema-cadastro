@@ -680,24 +680,36 @@
                 <div class="cc-footer-faixa" id="ccFaixa">FAIXA COMPLETA</div>
             </div>
 
-            <div class="cc-body-verso">
-    <div style="display: flex; align-items: flex-start; gap: 10px;">
-        
-        <div class="cc-verso-grid" style="flex: 2;">
-            <div>
-                <div class="cc-label">CPF</div>
-                <div class="cc-valor-verso" id="ccCpf">000.000.000-00</div>
-            </div>
-            <div>
-                <div class="cc-label">Nascimento</div>
-                <div class="cc-valor-verso" id="ccNasc">01/01/2000</div>
-            </div>
-           
-            <div style="grid-column: span 2;">
-                <div class="cc-label">Mestre / Instrutor</div>
-                <div class="cc-valor-verso" id="ccMestre">Nome do Mestre</div>
-            </div>
+            <div class="cc-body-verso" style="display: flex; gap: 20px; padding: 15px;">
+        <div style="flex: 2; display: flex; flex-direction: column; gap: 10px;">
+        <div>
+            <div class="cc-label">CPF</div>
+            <div class="cc-valor-verso" id="ccCpf">000.000.000-00</div>
         </div>
+        <div>
+            <div class="cc-label">Nascimento</div>
+            <div class="cc-valor-verso" id="ccNasc">01/01/2000</div>
+        </div>
+        <div>
+            <div class="cc-label">Academia / Dojang</div>
+            <div class="cc-valor-verso" id="ccDojang">Nome da Academia</div>
+        </div>
+        <div>
+            <div class="cc-label">Mestre / Instrutor</div>
+            <div class="cc-valor-verso" id="ccMestre">Nome do Mestre</div>
+        </div>
+    </div>
+
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+        <img id="ccQrCode" src="" alt="QR Code" style="width: 80px; height: 80px; border: 1px solid #ccc;">
+    </div>
+
+</div>
+
+<div class="cc-assinatura-area" style="margin-top: 10px; text-align: center;">
+    <div class="cc-assinatura-linha">Team Amazonas Liga Digital</div>
+    <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
+</div>
 
         <div style="flex: 1; display: flex; justify-content: center; align-items: center; padding-top: 40px;">
             <img id="ccQrCode" src="" alt="QR" style="width: 80px; height: 80px; border: 1px solid #ccc;">
