@@ -676,37 +676,36 @@
                 <div class="cc-footer-faixa" id="ccFaixa">FAIXA COMPLETA</div>
             </div>
 
-            <div class="carteirinha-face">
-                <div class="cc-body-verso">
-                    <div class="cc-verso-conteudo">
-                        <div class="cc-verso-grid">
-                            <div>
-                                <div class="cc-label">CPF</div>
-                                <div class="cc-valor-verso" id="ccCpf">000.000.000-00</div>
-                            </div>
-                            <div>
-                                <div class="cc-label">Nascimento</div>
-                                <div class="cc-valor-verso" id="ccNasc">01/01/2000</div>
-                            </div>
-                            <div style="grid-column: span 2;">
-                                <div class="cc-label">Academia / Dojang</div>
-                                <div class="cc-valor-verso" id="ccDojang">Nome da Academia</div>
-                            </div>
-                            <div style="grid-column: span 2;">
-                                <div class="cc-label">Mestre / Instrutor</div>
-                                <div class="cc-valor-verso" id="ccMestre">Nome do Mestre</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="cc-assinatura-area">
-                        <div class="cc-assinatura-linha">Team Amazonas Liga Digital</div>
-                        <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
-                    </div>
-                    </div>
-                  </div>
+            <div class="cc-body-verso">
+    <div style="display: flex; align-items: flex-start; gap: 10px;">
+        
+        <div class="cc-verso-grid" style="flex: 2;">
+            <div>
+                <div class="cc-label">CPF</div>
+                <div class="cc-valor-verso" id="ccCpf">000.000.000-00</div>
+            </div>
+            <div>
+                <div class="cc-label">Nascimento</div>
+                <div class="cc-valor-verso" id="ccNasc">01/01/2000</div>
+            </div>
+            <div style="grid-column: span 2;">
+                <div class="cc-label">Academia / Dojang</div>
+                <div class="cc-valor-verso" id="ccDojang">Nome da Academia</div>
+            </div>
+            <div style="grid-column: span 2;">
+                <div class="cc-label">Mestre / Instrutor</div>
+                <div class="cc-valor-verso" id="ccMestre">Nome do Mestre</div>
             </div>
         </div>
+
+        <div style="flex: 1; display: flex; justify-content: center; align-items: center; padding-top: 5px;">
+            <img id="ccQrCode" src="" alt="QR" style="width: 80px; height: 80px; border: 1px solid #ccc;">
+        </div>
+    </div>
+
+    <div class="cc-assinatura-area" style="margin-top: 15px;">
+        <div class="cc-assinatura-linha">Team Amazonas Liga Digital</div>
+        <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
     </div>
 </div>
         <div id="capture-area" style="position: absolute; left: -9999px; top: 0; background: #fff; padding: 20px; width: 400px;">
@@ -1032,9 +1031,17 @@
         } else {
             painelFaixa.style.borderTop = "none";
         }
-
+gerarQRCode(atleta);
         document.getElementById('modalCarteirinha').classList.add('active');
     }
+    
+    function gerarQRCode(atleta) {
+    const textoQR = `Atleta: ${atleta.nome} | Registro: ${atleta.inscricao} | Nasc: ${atleta.nascimento}`;
+    const url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textoQR)}`;
+    
+    const imgElement = document.getElementById('ccQrCode');
+    imgElement.src = url;
+}
     
     function fecharModal(idModal) {
         document.getElementById(idModal).classList.remove('active');
