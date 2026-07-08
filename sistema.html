@@ -703,10 +703,7 @@
                         <div class="cc-assinatura-linha">Team Amazonas Liga Digital</div>
                         <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
                     </div>
-                     <!-- Dentro do seu modalCarteirinha -->
-                <button onclick="salvarCarteirinha()" class="btn-download">
-                ⬇ Baixar Carteirinha
-                </button>
+                    
                 </div>
             </div>
         </div>
@@ -923,8 +920,9 @@
                         <button class="btn-acao btn-editar" onclick="carregarEdicao(${atleta.id})">Editar</button>
                         <button class="btn-acao btn-carteirinha" onclick="abrirCarteirinha(${atleta.id})">Carteirinha</button>
                         <button class="btn-acao btn-excluir" onclick="deletarAtleta(${atleta.id})">Excluir</button>
+                        <button onclick="salvarCarteirinha()" class="btn-download">⬇ Baixar Carteirinha </button>
                     </div>
-                </td>
+                    </td>
             `;
             tabela.appendChild(novaLinha);
         });
