@@ -708,6 +708,9 @@
         </div>
     </div>
 </div>
+        <div id="capture-area" style="position: absolute; left: -9999px; top: 0; background: #fff; padding: 20px; width: 400px;">
+    <div id="capture-content"></div>
+</div>
        <!-- Dentro do seu modalCarteirinha -->
 <button onclick="salvarCarteirinha()" class="btn-download">
     ⬇ Baixar Carteirinha
@@ -1057,24 +1060,29 @@
 
 <script>
    function salvarCarteirinha() {
-    const carteirinha = document.querySelector('.carteirinha-container');
+    // Pega o conteúdo que você já exibe na tela
+    const conteudoCarteirinha = document.querySelector('.carteirinha-container').innerHTML;
+    const areaCaptura = document.getElementById('capture-content');
     
-    html2canvas(carteirinha, {
-        scale: 3,               // Mantém a alta resolução
-        useCORS: true,
-        allowTaint: true,
-        // CORREÇÃO: Força o navegador a considerar o tamanho real da div
-        windowWidth: document.documentElement.offsetWidth,
-        windowHeight: document.documentElement.offsetHeight,
-        onclone: function (clonedDoc) {
-            // Garante que o elemento clonado tenha a mesma aparência
-            clonedDoc.querySelector('.carteirinha-container').style.display = 'block';
-        }
+    // Insere na área oculta
+    areaCaptura.innerHTML = conteudoCarteirinha;
+    
+    // Configura o estilo para garantir que não haja sobreposição
+    areaCaptura.style.display = 'block';
+    areaCaptura.style.width = '400px'; // Largura fixa para não bagunçar
+    
+    html2canvas(document.getElementById('capture-area'), {
+        scale: 3, 
+        backgroundColor: '#ffffff',
+        useCORS: true
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'Carteirinha_Atleta.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
+        link.href = canvas.toDataURL('image/png');
         link.click();
+        
+        // Limpa a área oculta
+        areaCaptura.innerHTML = '';
     });
 }
 </script>
