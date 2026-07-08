@@ -703,6 +703,10 @@
                         <div class="cc-assinatura-linha">Team Amazonas Liga Digital</div>
                         <div class="cc-chancela">Chancela Eletrônica da Presidência</div>
                     </div>
+                     <!-- Dentro do seu modalCarteirinha -->
+                <button onclick="salvarCarteirinha()" class="btn-download">
+                ⬇ Baixar Carteirinha
+                </button>
                 </div>
             </div>
         </div>
@@ -711,10 +715,7 @@
         <div id="capture-area" style="position: absolute; left: -9999px; top: 0; background: #fff; padding: 20px; width: 400px;">
     <div id="capture-content"></div>
 </div>
-       <!-- Dentro do seu modalCarteirinha -->
-<button onclick="salvarCarteirinha()" class="btn-download">
-    ⬇ Baixar Carteirinha
-</button>
+      
         <script>
     function trocarTab(evt, tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
