@@ -1056,23 +1056,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script>
-    function salvarCarteirinha() {
-        // Seleciona a div da carteirinha
-        const carteirinha = document.querySelector('.carteirinha-container');
-        
-        // Opções para melhorar a qualidade da imagem
-        html2canvas(carteirinha, {
-            scale: 2,               // Aumenta a resolução para não ficar borrado
-            logging: false,         // Desliga logs no console
-            useCORS: true           // Permite carregar imagens externas (como as logos)
-        }).then(canvas => {
-            // Cria o link de download
-            const link = document.createElement('a');
-            link.download = 'Carteirinha_Atleta.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        });
-    }
+   function salvarCarteirinha() {
+    const carteirinha = document.querySelector('.carteirinha-container');
+    
+    html2canvas(carteirinha, {
+        scale: 4,               // Aumenta a resolução (4x maior)
+        backgroundColor: '#ffffff', // Garante o fundo branco sólido
+        useCORS: true,
+        width: carteirinha.offsetWidth, // Força a largura exata
+        height: carteirinha.offsetHeight // Força a altura exata
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Carteirinha_Atleta.png';
+        link.href = canvas.toDataURL('image/png', 1.0); // 1.0 = qualidade máxima
+        link.click();
+    });
+}
 </script>
 </body>
 </html>
