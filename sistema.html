@@ -1060,15 +1060,20 @@
     const carteirinha = document.querySelector('.carteirinha-container');
     
     html2canvas(carteirinha, {
-        scale: 4,               // Aumenta a resolução (4x maior)
-        backgroundColor: '#ffffff', // Garante o fundo branco sólido
+        scale: 4,               // Mantém a alta resolução
         useCORS: true,
-        width: carteirinha.offsetWidth, // Força a largura exata
-        height: carteirinha.offsetHeight // Força a altura exata
+        allowTaint: true,
+        // CORREÇÃO: Força o navegador a considerar o tamanho real da div
+        windowWidth: document.documentElement.offsetWidth,
+        windowHeight: document.documentElement.offsetHeight,
+        onclone: function (clonedDoc) {
+            // Garante que o elemento clonado tenha a mesma aparência
+            clonedDoc.querySelector('.carteirinha-container').style.display = 'block';
+        }
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'Carteirinha_Atleta.png';
-        link.href = canvas.toDataURL('image/png', 1.0); // 1.0 = qualidade máxima
+        link.href = canvas.toDataURL('image/png', 1.0);
         link.click();
     });
 }
