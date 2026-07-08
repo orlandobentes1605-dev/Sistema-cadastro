@@ -708,6 +708,14 @@
         </div>
     </div>
 </div>
+        <div class="modal-card" ...>
+    <button class="modal-close" onclick="fecharModal('modalCarteirinha')">X</button>
+    
+    <button onclick="salvarCarteirinha()" style="background:#27ae60; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; margin-bottom:10px;">
+        💾 Salvar Carteirinha (PNG)
+    </button>
+
+    </div>
         <script>
     function trocarTab(evt, tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -1047,6 +1055,21 @@
         if (event.target.id === idModal) {
             fecharModal(idModal);
         }
+    }
+</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+    function salvarCarteirinha() {
+        const elemento = document.getElementById('modalCarteirinha'); // A div da carteirinha
+        
+        html2canvas(elemento).then(canvas => {
+            // Cria um link temporário para download
+            const link = document.createElement('a');
+            link.download = 'carteirinha-atleta.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
     }
 </script>
 </body>
