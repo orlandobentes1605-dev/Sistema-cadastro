@@ -689,7 +689,7 @@
                                 <div class="cc-valor-verso" id="ccNasc">01/01/2000</div>
                             </div>
                             <div style="grid-column: span 2;">
-                                <div class="cc-label">Organização / Dojang</div>
+                                <div class="cc-label">Academia / Dojang</div>
                                 <div class="cc-valor-verso" id="ccDojang">Nome da Academia</div>
                             </div>
                             <div style="grid-column: span 2;">
@@ -708,14 +708,10 @@
         </div>
     </div>
 </div>
-        <div class="modal-card" ...>
-    <button class="modal-close" onclick="fecharModal('modalCarteirinha')">X</button>
-    
-    <button onclick="salvarCarteirinha()" style="background:#27ae60; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer; margin-bottom:10px;">
-        💾 Salvar Carteirinha (PNG)
-    </button>
-
-    </div>
+       <!-- Dentro do seu modalCarteirinha -->
+<button onclick="salvarCarteirinha()" class="btn-download">
+    ⬇ Baixar Carteirinha
+</button>
         <script>
     function trocarTab(evt, tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -1061,12 +1057,18 @@
 
 <script>
     function salvarCarteirinha() {
-        const elemento = document.getElementById('modalCarteirinha'); // A div da carteirinha
+        // Seleciona a div da carteirinha
+        const carteirinha = document.querySelector('.carteirinha-container');
         
-        html2canvas(elemento).then(canvas => {
-            // Cria um link temporário para download
+        // Opções para melhorar a qualidade da imagem
+        html2canvas(carteirinha, {
+            scale: 2,               // Aumenta a resolução para não ficar borrado
+            logging: false,         // Desliga logs no console
+            useCORS: true           // Permite carregar imagens externas (como as logos)
+        }).then(canvas => {
+            // Cria o link de download
             const link = document.createElement('a');
-            link.download = 'carteirinha-atleta.png';
+            link.download = 'Carteirinha_Atleta.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
         });
